@@ -194,6 +194,10 @@ impl ProofSystem for GM17 {
             SOLIDITY_G2_ADDITION_LIB, solidity_pairing_lib, template_text
         )
     }
+
+    fn verify(&self, vk_path: &str, proof_path: &str) -> bool {
+        unimplemented!()
+    }
 }
 
 const CONTRACT_TEMPLATE_V2: &str = r#"

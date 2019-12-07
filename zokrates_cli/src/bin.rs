@@ -259,6 +259,33 @@ fn cli() -> Result<(), String> {
             .possible_values(&["remix", "json"])
             .required(true)
         )
+    ).subcommand(SubCommand::with_name("verify")
+        .about("Verifies a given proof with the given constraint system and verification key")
+        .arg(Arg::with_name("proofpath")
+            .short("j")
+            .long("proofpath")
+            .help("Path of the JSON proof file")
+            .value_name("FILE")
+            .takes_value(true)
+            .required(false)
+            .default_value(JSON_PROOF_PATH)
+        ).arg(Arg::with_name("verification-key-path")
+            .short("v")
+            .long("verification-key-path")
+            .help("Path of the generated verification key file")
+            .value_name("FILE")
+            .takes_value(true)
+            .required(false)
+            .default_value(VERIFICATION_KEY_DEFAULT_PATH)
+        ).arg(Arg::with_name("proving-scheme")
+            .short("s")
+            .long("proving-scheme")
+            .help("Proving scheme to use in the setup. Available options are G16 (default), PGHR13 and GM17")
+            .value_name("FILE")
+            .takes_value(true)
+            .required(false)
+            .default_value(&default_scheme)
+        )
     )
     .get_matches();
 
@@ -555,6 +582,18 @@ fn cli() -> Result<(), String> {
                 }
                 _ => unreachable!(),
             }
+        }
+        ("verify", Some(sub_matches)) => {
+            let scheme = get_scheme(sub_matches.value_of("proving-scheme").unwrap())?;
+
+            println!("Performing Verification...");
+
+            // get paths for proof and verification keys
+            let proof_path = sub_matches.value_of("proofpath").unwrap();
+            let vk_path = sub_matches.value_of("verification-key-path").unwrap();
+
+            // run setup phase
+            scheme.verify(vk_path, proof_path);
         }
         _ => unreachable!(),
     }

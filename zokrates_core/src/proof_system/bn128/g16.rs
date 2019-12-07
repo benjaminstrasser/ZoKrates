@@ -147,6 +147,10 @@ impl ProofSystem for G16 {
             SOLIDITY_G2_ADDITION_LIB, solidity_pairing_lib, template_text
         )
     }
+
+    fn verify(&self, vk_path: &str, proof_path: &str) -> bool {
+        unimplemented!()
+    }
 }
 
 mod serialize {

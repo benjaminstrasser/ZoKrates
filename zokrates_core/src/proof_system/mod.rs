@@ -24,4 +24,6 @@ pub trait ProofSystem {
     ) -> bool;
 
     fn export_solidity_verifier(&self, reader: BufReader<File>, is_abiv2: bool) -> String;
+
+    fn verify(&self, vk_path: &str, proof_path: &str) -> bool;
 }
